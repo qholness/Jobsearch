@@ -1,0 +1,20 @@
+<script>
+    $(document).ready(function() {
+        $('#restable').DataTable( {
+            // scrollY: "360px",
+            scrollX: true,
+            paging: false
+        } )
+        .order( [[ 1,  'desc']])
+        .draw( false );
+        $('.generictable').DataTable( {
+            // scrollY: "360px",
+            scrollX: true,
+            paging: false,
+            bFilter: false,
+            bInfo: false
+        } )
+        .order( [[ 1,  'desc']])
+        .draw( false );
+    } );
+</script>

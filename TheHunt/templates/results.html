@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% set columns = ['search_term', 'summary', 'updated', 'title', 'company',
+    'city', 'state', 'min_salary', 'max_salary'] %}
+<h4>Found {{ "{:,.0f}".format(session['found_jobs']) }} jobs</h4>
+<p>Page(s):
+    {% if hits.has_prev %}
+        <a href="{{ url_for('guest.search', page=hits.prev_num) }}">Previous</a>
+    {% endif %}
+    {% for page in hits.iter_pages() %}
+        {% if page %}
+            {% if page != hits.page %}
+                <a href="{{ url_for('guest.search', page=page) }}">{{ page }}</a>
+            {% else %}
+                <strong>{{ page }}</strong>
+            {% endif %}
+        {% else %}
+            <span class=ellipsis>...</span>
+        {% endif %}
+    {% endfor %}
+    {% if hits.has_next %}
+        <a href="{{ url_for('guest.search', page=hits.next_num) }}">Next</a>
+    {% endif %}
+</p>
+<div>
+    <div id=table_div>
+        <table class="display" id="job_table" style="width:100%">
+            <thead>
+                <tr>
+                {% for col in columns %}
+                    <th>
+                        <strong>
+                            {{ col.title().replace('_', ' ') }}
+                        </strong>
+                    </th>
+                {% endfor %}
+                </tr>
+            </thead>
+            <tbody id=result_body>
+            </tbody>
+        </table>
+    </div>
+</div>
+<style>
+    #table_div {
+        overflow-x: scroll;
+        overflow-y: scroll;
+    }
+    /* tr {
+        height: 50px;
+    } */
+    .colorofmoney {
+        color: rgba(0, 160, 15, .5)
+    }
+</style>
+    <script>
+        $("#table_div").hide();
+        // Write rows to hidden table.
+        {% for hit in hits.items %}
+            var tr = document.createElement('tr');
+            {% for col in columns %}
+                var td = document.createElement('td');
+                {% if col == 'title' %}
+                    td.innerHTML = `<td><a href={{ hit['url'] }} target='_'>{{ hit[col] }}</a></td>`
+                {% elif 'salary' in col %}
+                    {% if hit[col] %}
+                        td.innerHTML = `<td>
+                            <span class=colorofmoney>{{ locale.currency(hit[col], grouping=True) }}</span>
+                        </td>`
+                    {% else %}
+                        td.innerHTML = `<td></td>`
+                    {% endif %}
+                {% elif col == 'updated' %}
+                    td.innerHTML = `<td>{{ hit[col].date() }}</td>`
+                {% else %}
+                    td.innerHTML = `<td>{{ hit[col] }}</td>`
+                {% endif %}
+                tr.appendChild(td);
+            {% endfor %}
+            document.getElementById('result_body').appendChild(tr);
+        {% endfor %}
+
+        $(document).ready(function() {
+            var table = $('#job_table').DataTable( {
+                // scrollY: "360px",
+                scrollX: true,
+                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                "pageLength": 10,
+                "columnDefs": [
+                    {
+                        "targets": [0],
+                        "visible": false,
+                        "searchable": true
+                    },
+                    {
+                        "targets": [1],
+                        "visible": true,
+                        "searchable": true
+                    }
+                ],
+                initComplete: function () {
+                    $("#table_div").show();
+                }
+            } );
+            table
+                .order( [[ 2,  'desc']])
+                .draw( false );
+        } );
+    </script>
+{% endblock %}

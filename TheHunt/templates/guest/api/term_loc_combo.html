@@ -1,0 +1,33 @@
+<script>
+async function UpdateTopSearchLocCombo() {
+    while(true) {
+      var text = $(this).val();
+      $.ajax({
+          url: "{{ url_for('guest.get_top_search_loc_combo')}}",
+          type: "get",
+          success: function(response) {
+
+            $("#topsearchloccombodiv").html(
+                `<table id=topsearchloccombotable><thead>
+                    <th>Search Term</th>
+                    <th>Results</th>
+                </thead>` +
+                `<tbody>`+
+                  response+
+                  `</tbody></table>`);
+            $("#topsearchloccombotable").DataTable( {
+                  scrollX: true,
+                  paging: true,
+                  bInfo : false
+            } )
+            .order( [[ 1,  'desc']])
+            .draw( false );
+          },
+          error: function(xhr) {
+        }
+      });
+      await sleep(60000); // Refresh every 60 seconds
+    };
+}
+$(document).ready(UpdateTopSearchLocCombo);
+</script>

@@ -1,0 +1,20 @@
+<script>
+async function UpdateJobCount() {
+    while(true) {
+      var text = $(this).val();
+      $.ajax({
+          url: "/guest/api/jobcount",
+          type: "get",
+          success: function(response) {
+            $("#jobcounter").html(response.jobs+
+              '<br><sub>' + getTimeStamp() + '</sub>');
+          },
+          error: function(xhr) {
+            $("#jobcounter").html("Couldn't count jobs");
+        }
+      });
+      await sleep(60000); // Refresh every 60 seconds
+    };
+}
+$(document).ready(UpdateJobCount);
+</script>

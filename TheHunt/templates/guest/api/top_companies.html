@@ -1,0 +1,32 @@
+<script>
+async function UpdateTopCompanies() {
+    while(true) {
+      var text = $(this).val();
+      $.ajax({
+          url: "{{ url_for('guest.get_top_companies') }}",
+          type: "get",
+          success: function(response) {
+            $("#topcompaniesdiv").html(
+                `<table id=topcompaniestable><thead>
+                    <th>Company</th>
+                    <th>Count</th>
+                </thead>` +
+                `<tbody>`+
+                  response+
+                  `</tbody></table>`);
+            $("#topcompaniestable").DataTable( {
+                  scrollX: true,
+                  paging: true,
+                  bInfo : false
+            } )
+            .order( [[ 1,  'desc']])
+            .draw( false );
+          },
+          error: function(xhr) {
+        }
+      });
+      await sleep(60000); // Refresh every 60 seconds
+    };
+}
+$(document).ready(UpdateTopCompanies);
+</script>

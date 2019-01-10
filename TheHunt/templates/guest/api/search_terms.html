@@ -1,0 +1,34 @@
+<script>
+async function UpdateTopSearchTerms() {
+    while(true) {
+      var text = $(this).val();
+      $.ajax({
+          url: "{{ url_for('guest.get_top_search_terms')}}",
+          type: "get",
+          success: function(response) {
+            $("#topsearchtermsdiv").html(
+                `<table id=topsearchtermstable><thead>
+                    <th>Search Term</th>
+                    <th>Count</th>
+                </thead>` +
+                `<tbody>`+
+                  response+
+                  `</tbody></table>`);
+            $("#topsearchtermstable").DataTable( {
+                  scrollX: true,
+                  paging: false,
+                  bFilter: false,
+                  bSearch: false,
+                  bInfo : false
+            } )
+            .order( [[ 1,  'desc']])
+            .draw( false );
+          },
+          error: function(xhr) {
+        }
+      });
+      await sleep(60000); // Refresh every 60 seconds
+    };
+}
+$(document).ready(UpdateTopSearchTerms);
+</script>

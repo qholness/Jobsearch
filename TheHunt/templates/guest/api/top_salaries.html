@@ -1,0 +1,34 @@
+<script>
+async function UpdateTopSalaries() {
+    while(true) {
+      var text = $(this).val();
+      $.ajax({
+          url: "{{ url_for('guest.get_top_salaries')}}",
+          type: "get",
+          success: function(response) {
+            $("#topsalariesdiv").html(
+                `<table id=topsalariestable><thead>
+                    <th>Search Term</th>
+                    <th>Salary</th>
+                </thead>` +
+                `<tbody>`+
+                  response+
+                  `</tbody></table>`);
+            $("#topsalariestable").DataTable( {
+                  scrollX: true,
+                  paging: false,
+                  bFilter: false,
+                  bInfo: false,
+                  bInfo : false
+            } )
+            .order( [[ 1,  'desc']])
+            .draw( false );
+          },
+          error: function(xhr) {
+        }
+      });
+      await sleep(60000); // Refresh every 60 seconds
+    };
+}
+$(document).ready(UpdateTopSalaries);
+</script>

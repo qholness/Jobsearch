@@ -1,0 +1,19 @@
+<div class="col-md">
+    <h4>Top Words</h4>
+    <div class=tablecontainer>
+        <table class=generictable>
+            <thead>
+                <th>Word</th>
+                <th>Count</th>
+            </thead>
+            <tbody>
+                {% for w in top_words %}
+                    <tr>
+                        <td><strong>{{ w.word }}</strong></td>
+                        <td>{{ "{:,.0f}".format(w.total) }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,33 @@
+<script>
+async function UpdateTopLocations() {
+    while(true) {
+      var text = $(this).val();
+      $.ajax({
+          url: "/guest/api/toplocations",
+          type: "get",
+          success: function(response) {
+            $("#toploctable").html(
+                `<table id=top_loc_table_api_ret><thead>
+                    <th>City</th>
+                    <th>State</th>
+                    <th>Count</th>
+                </thead>` +
+                `<tbody>`+
+                  response+
+                  `</tbody></table>`);
+            $("#top_loc_table_api_ret").DataTable( {
+                  scrollX: true,
+                  paging: true,
+                  bInfo : false
+            } )
+            .order( [[ 2,  'desc']])
+            .draw( false );
+          },
+          error: function(xhr) {
+        }
+      });
+      await sleep(60000); // Refresh every 60 seconds
+    };
+}
+$(document).ready(UpdateTopLocations);
+</script>
