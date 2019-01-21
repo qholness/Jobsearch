@@ -8,10 +8,12 @@ from datetime import datetime, timedelta
 
 
 def process_word(word):
+    # Replace special and numeric characters
     rplc = "`1234567890~!@#$%%^&*()-=+_}{][|\\ \"';:><.,/?”“ ’"
     for rpl in rplc:
         word = word.replace(rpl, ' ').strip()
 
+    # Replace escape characters
     rplc = ['\n', '\b', '\r', '\t']
 
     for rpl in rplc:
@@ -62,8 +64,7 @@ def update_word_corpus():
     db.session.commit()
 
     summaries = Hit.query.add_column(Hit.summary)
-    summaries = tqdm(summaries.all(), leave=True)
-    for summary in summaries:
+    for summary in summaries.all():
         if summary.summary is None:
             continue
         words = summary.summary.split()

@@ -12,6 +12,7 @@ class SearchTerm(db.Model):
     created_date = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     updated_date = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     text = string_col()
+    num_jobs = db.Column(db.Integer, default=100)
     hit = db.relationship("Hit", cascade="all, delete-orphan")
 
 
@@ -23,6 +24,7 @@ class Location(db.Model):
     city = string_col()
     state = string_col()
     full = string_col()
+    num_jobs = db.Column(db.Integer, default=1)
     hit = db.relationship("Hit", cascade="all, delete-orphan")
 
 
@@ -35,13 +37,21 @@ class Hit(db.Model):
     term = db.Column(db.ForeignKey('search_term.id'))
     loc = db.Column(db.ForeignKey('locations.id'))
     title = string_col()
-    # company = db.Column(db.ForeignKey('company.id'))
     company = string_col()
     salary = string_col()
     min_salary = db.Column(db.Numeric)
     max_salary = db.Column(db.Numeric)
-    summary = db.Column(db.String(500))
+    summary = db.Column(db.Text)
+    ignore = db.Column(db.Boolean)
+    applied = db.Column(db.Boolean)
+    interested = db.Column(db.Boolean)
+    interview = db.Column(db.Boolean)
+    offer = db.Column(db.Boolean)
     url = string_col()
+    location = db.relationship("Location",
+        backref=db.backref("locations", cascade="all, delete-orphan"))
+    searchterm = db.relationship("SearchTerm",
+        backref=db.backref("search_term", cascade="all, delete-orphan"))
 
 
 class WordCopus(db.Model):

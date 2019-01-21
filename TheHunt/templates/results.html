@@ -29,11 +29,11 @@
             <thead>
                 <tr>
                 {% for col in columns %}
-                    <th>
+                    <td>
                         <strong>
                             {{ col.title().replace('_', ' ') }}
                         </strong>
-                    </th>
+                    </td>
                 {% endfor %}
                 </tr>
             </thead>
@@ -61,9 +61,19 @@
             var tr = document.createElement('tr');
             {% for col in columns %}
                 var td = document.createElement('td');
+
                 {% if col == 'title' %}
-                    td.innerHTML = `<td><a href={{ hit['url'] }} target='_'>{{ hit[col] }}</a></td>`
-                {% elif 'salary' in col %}
+                    td.innerHTML = `
+                    <td>
+                        <a href={{ hit['url'] }} target='_' title="{{ hit.title }}">{{ hit[col][:20] }}</a>
+                    </td><br>
+                    <div class="buttoncontainer">
+                      <!-- <img title="Applied" class="applyicon AppliedButton" id="{{ hit['id'] }}" src="{{ url_for('static', filename='images/sent.png') }}"> -->
+                      <img title="Interested" class="interesticon InterestedButton" id="{{ hit['id'] }}" src="{{ url_for('static', filename='images/interest.png') }}">
+                      <img title="Ignore" class="trashicon IgnoreButton" id="{{ hit['id'] }}" src="{{ url_for('static', filename='images/trash.png') }}">
+                    </div>`
+
+                {% elif col in ('min_salary', 'max_salary') %}
                     {% if hit[col] %}
                         td.innerHTML = `<td>
                             <span class=colorofmoney>{{ locale.currency(hit[col], grouping=True) }}</span>

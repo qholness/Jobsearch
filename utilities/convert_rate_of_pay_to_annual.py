@@ -1,4 +1,4 @@
-def main(rop, pay):
+def convert_rate_of_pay_to_annual(rop, pay):
     if rop is None:
         return None
     if pay is None:

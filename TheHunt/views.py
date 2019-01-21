@@ -1,6 +1,4 @@
-from flask import Blueprint, redirect, url_for, current_app
-
-
+from flask import Blueprint, redirect, url_for
 general = Blueprint('general', __name__, url_prefix='/')
 
 

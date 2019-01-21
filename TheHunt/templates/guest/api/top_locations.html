@@ -3,7 +3,7 @@ async function UpdateTopLocations() {
     while(true) {
       var text = $(this).val();
       $.ajax({
-          url: "/guest/api/toplocations",
+          url: "/api/hits/locations-by-search-term",
           type: "get",
           success: function(response) {
             $("#toploctable").html(
@@ -26,7 +26,7 @@ async function UpdateTopLocations() {
           error: function(xhr) {
         }
       });
-      await sleep(60000); // Refresh every 60 seconds
+      await sleep({{ session['REFRESH_RATE'] }} * 1000); // Refresh every 60 seconds
     };
 }
 $(document).ready(UpdateTopLocations);

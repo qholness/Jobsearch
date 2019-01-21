@@ -6,7 +6,6 @@ from TheHunt.appadmin import api
 from TheHunt.models import Hit, SearchTerm,\
     Location, Company,User
 from sqlalchemy import func
-from multiprocessing import Process
 from werkzeug.security import check_password_hash
 
 

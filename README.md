@@ -1,3 +1,3 @@
-# JobSearch
+# Indeed Dashboard
 
-Indeed job scraper
+An Indeed Job Scraper and job search Flask Application

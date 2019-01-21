@@ -1,22 +1,22 @@
-<!-- <script>
-async function UpdateTopCompanies() {
+<script>
+async function UpdateTopWords() {
     while(true) {
       var text = $(this).val();
       $.ajax({
-          url: "{{ url_for('guest.get_top_companies') }}",
+          url: "/api/hits/top-words",
           type: "get",
           success: function(response) {
-            $("#topcompaniesdiv").html(
-                `<table id=topcompaniestable><thead>
-                    <th>Company</th>
+            $("#topwordsdiv").html(
+                `<table id=topwordstable><thead>
+                    <th>Word</th>
                     <th>Count</th>
                 </thead>` +
                 `<tbody>`+
-                  response+
+                  response +
                   `</tbody></table>` +
                   "Refreshed: " + getTimeStamp()
             );
-            $("#topcompaniestable").DataTable( {
+            $("#topwordstable").DataTable( {
                   scrollX: true,
                   paging: false,
                   bInfo : false
@@ -30,5 +30,5 @@ async function UpdateTopCompanies() {
       await sleep(60000); // Refresh every 60 seconds
     };
 }
-$(document).ready(UpdateTopCompanies);
-</script> -->
+$(document).ready(UpdateTopWords);
+</script>

@@ -1,6 +1,6 @@
 from .process_salary import main as process_salary
-from .convert_rate_of_pay_to_annual import main as convert_rate_of_pay_to_annual
-from .get_summary import main as get_summary
+from .convert_rate_of_pay_to_annual import convert_rate_of_pay_to_annual
+from .get_summary import get_summary
 
 
 def generate_result(search_vector, div):
@@ -9,13 +9,13 @@ def generate_result(search_vector, div):
     companies = div.find_all(name='span', attrs={'class': 'company'})
     salaries = div.find_all(name='span', attrs={'class': 'salary no-wrap'})
     locations = div.find_all(name='span', attrs={'class': 'location'})
-    summary = div.find_all(name='span', attrs={'class': 'summary'})
-    if summary:
-        summary = summary[0]\
-            .text\
-            .strip()\
-            .replace('`', '')\
-            .replace('\\', '')
+    # summary = div.find_all(name='span', attrs={'class': 'summary'})
+    # if summary:
+    #     summary = summary[0]\
+    #         .text\
+    #         .strip()\
+    #         .replace('`', '')\
+    #         .replace('\\', '')
 
     # Process salary information
     salary = process_salary(salaries)
@@ -29,6 +29,7 @@ def generate_result(search_vector, div):
         salary.get('max_sal'))
 
     link = f"{indeed_url}{titles[0]['href']}"
+    summary = get_summary(link)
 
     return dict(
             search_term=search_vector.term.strip(),

@@ -17,6 +17,7 @@
             {% endblock %}
         </div>
         <br><br>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/tableops.js') }}"></script>
     </body>
     <div id=footer>Icons made by <a href="https://www.freepik.com/" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" 			    title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" 			    title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
     <style media="screen">
@@ -24,6 +25,33 @@
         position: relative;
         left: 0;
         bottom: 0;
+      }
+      .achieveicon {
+        height: 48px;
+        width: 24px;
+        display: inline;
+      }
+
+      .trashicon {
+        height: 32px;
+        width: 32px;
+        display: inline;
+      }
+      .interesticon {
+        height: 32px;
+        width: 32px;
+        display: inline;
+      }
+      .applyicon {
+        height: 32px;
+        width: 32px;
+        display: inline;
+      }
+      .achieveicon:hover,
+      .trashicon:hover,
+      .interesticon:hover,
+      .applyicon:hover {
+        cursor: pointer;
       }
     </style>
     {% block scripts %}

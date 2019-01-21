@@ -1,16 +1,34 @@
 import uuid
+import datetime
 
 
 class Config(object):
     DEBUG = False
     TESTING = False
-    SQLALCHEMY_DATABASE_URI = 'postgresql://my:database@connection/string'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://job:jobsearch1234@localhost/job'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    PAGE_PER_REQUEST = 5000
+    PAGE_PER_REQUEST = 1000
     PRUNE_HIT_DAYS = 7
-    REFRESH_RATE = 60  # In seconds
-    BASIC_AUTH_USERNAME = 'my_auth_username'
-    BASIC_AUTH_PASSWORD = 'my_auth_password'
+    REFRESH_RATE = 120  # In seconds
+    BASIC_AUTH_USERNAME = 'change'
+    BASIC_AUTH_PASSWORD = 'me123'
+    CELERY_BROKER_URL = "amqp://rabbitmq:rabbitmq@localhost//"
+    CELERY_RESULT_BACKEND = "redis://localhost:6379/0"
+
+
+class LocalRemoteDev(Config):
+    DEBUG = True
+    SECRET_KEY = 'remote'
+    BASIC_AUTH_USERNAME = 'dev'
+    BASIC_AUTH_PASSWORD = 'dev'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://job:jobsearch1234@192.168.1.110/job'
+
+class CeleryConfig(Config):
+    DEBUG = False
+    TESTING = False
+    HIT_GET_WAIT_HOURS = 8
+    PRUNE_WAIT_DAYS = 7
+    UPDATE_WORD_CORP_WAIT_HOURS = 6
 
 
 class Debug(Config):
@@ -28,11 +46,11 @@ class Testing(Config):
 
 class ETL(Config):
     SECRET_KEY = str(uuid.uuid4())
-    PAGE_PER_REQUEST = 100
+    PAGE_PER_REQUEST = 1000
     PRUNE_HIT_DAYS = 14
 
 
 class Production(Config):
     SECRET_KEY = str(uuid.uuid4())
-    PAGE_PER_REQUEST = 100
+    PAGE_PER_REQUEST = 5000
     PRUNE_HIT_DAYS = 14

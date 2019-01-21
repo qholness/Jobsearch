@@ -1,3 +1,9 @@
+"""Administrative Blueprint.
+
+Used in database administration and update in conjunction with Celery
+"""
+
+
 from flask import Blueprint
 
 

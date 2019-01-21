@@ -4,13 +4,13 @@ from flask import current_app, render_template,\
     jsonify
 from sqlalchemy import func
 from TheHunt.db import db
-# from TheHunt.socket import socketio
+from TheHunt.resources import JobsApi, HitSearch
 from TheHunt.models import Hit, SearchTerm, Location
 from TheHunt.guest import guest
-from TheHunt.guest import api
 import utilities as utils
 import locale
-locale.setlocale( locale.LC_ALL, '' )
+locale.setlocale( locale.LC_ALL, 'en_US.UTF-8')
+
 
 
 @guest.before_app_first_request
@@ -20,14 +20,11 @@ def log():
 
 @guest.route('/')
 def home():
-    search_titles = api.get_search_terms().all()
-    search_locations = api.get_locations().all()
-    top_words = api.get_top_words(100).all()
+    API = HitSearch()
     return render_template(
         'search.html',
-        search_terms=search_titles,
-        search_locations=search_locations,
-        top_words=top_words)
+        search_terms=API.get_search_terms(),
+        search_locations=API.get_locations())
 
 
 
@@ -37,9 +34,42 @@ def search(page=1):
     if request.args.get('search_term') is not None:
         # Update search args when a new search is performed
         session['search_args'] = request.args
-    hits = api.get_hits()
+    hits = HitSearch().get_hits()
     session['found_jobs'] = hits.count()
     hits = hits.paginate(page, per_page=current_app.config['PAGE_PER_REQUEST'], error_out=False)
-
-
     return render_template('results.html', hits=hits, locale=locale)
+
+
+@guest.route('/applied')
+def applied_to():
+    return render_template(
+        "applied.html",
+        jobs=JobsApi().get_applied())
+
+
+@guest.route('/interested')
+def interested_in():
+    return render_template(
+        "interested.html",
+        jobs=JobsApi().get_interested())
+
+
+@guest.route('/ignored')
+def ignored_jobs():
+    return render_template(
+        "ignored.html",
+        jobs=JobsApi().get_ignored())
+
+
+@guest.route('/interviewing')
+def interview_jobs():
+    return render_template(
+        "interview.html",
+        jobs=JobsApi().get_interviewing())
+
+
+@guest.route('/offer')
+def offer_jobs():
+    return render_template(
+        "offer.html",
+        jobs=JobsApi().get_offers())

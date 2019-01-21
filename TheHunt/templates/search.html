@@ -10,38 +10,28 @@
           width: 90%;
         }
     </style>
-    <p>Refresh every 60 seconds</p>
+    <p>Refresh every {{ session['REFRESH_RATE'] }} seconds</p>
     <div class=row>
-        <div class="col-lg">
+        <div class="col-lg-4">
             <h4>Jobs in database: <span id=jobcounter></span></h4>
-            
             <form action="{{ url_for('guest.search') }}" method="GET">
-                <dd>
-                    <select name="search_term">
-                        <option value="">Search by search term</option>
-                        {% for term in search_terms %}
-                            <option value="{{ term.text }}">{{ term.text }}</option>
-                        {% endfor %}
-                    </select>
-                </dd>
-                <dd>
-                    <select name="search_location">
-                        <option value="">Search by Location</option>
-                        {% for loc in search_locations %}
-                            <option value="{{ loc.full }}">{{ loc.city }}, {{ loc.state }}</option>
-                        {% endfor %}
-                    </select>
-                </dd>
-                <dd>
-                    <input type="search" name="search_summary" placeholder="Search summary info">
-                </dd>
-                <dd>
-                    <input type="search" name="search_min_salary" placeholder="Search minimum salary">
-                </dd>
-                <dd>
-                    <input type="search" name="search_company" placeholder="Search company names">
-                </dd>
-                <input type="submit">
+                <select class="form-control" name="search_term">
+                    <option value="">Search by search term</option>
+                    {% for term in search_terms %}
+                        <option value="{{ term.text }}">{{ term.text }}</option>
+                    {% endfor %}
+                </select>
+            
+                <select class="form-control" name="search_location">
+                    <option value="">Search by Location</option>
+                    {% for loc in search_locations %}
+                        <option value="{{ loc.full }}">{{ loc.city }}, {{ loc.state }}</option>
+                    {% endfor %}
+                </select>
+                <input class="form-control" type="search" name="search_summary" placeholder="Search summary info">
+                <input class="form-control" type="search" name="search_min_salary" placeholder="Search minimum salary">
+                <input class="form-control" type="search" name="search_company" placeholder="Search company names">
+                <input class="btn btn-info" type="submit">
             </form>
         </div>
         {% include 'guest/top_lists/top_term_loc_combo.html' %}

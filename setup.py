@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="TheHunt",
-    version='0.1',
+    version='0.2',
     long_description="",
     packages=['TheHunt'],
     include_package_data=True,

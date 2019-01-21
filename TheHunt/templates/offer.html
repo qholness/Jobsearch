@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h2>Offers!</h2>
+    <table id="TABLE">
+        <thead>
+            <td>Term</td>
+            <td>Title</td>
+            <td>Company</td>
+            <td>Location</td>
+        </thead>
+        <tbody>
+            {% for job in jobs %}
+                <tr>
+                    <td>{{ job.search_term }}</td>
+                    <td>
+                        <a href={{ job.url }} target=_>{{ job.title }}</a>
+                        <div class="buttoncontainer">
+                          <img title="Offered" class="achieveicon OFFER" id="{{ job['id'] }}" src="{{ url_for('static', filename='images/srk.png') }}">
+                          <img title="Ignore" class="trashicon DELETE" id="{{ job['id'] }}" src="{{ url_for('static', filename='images/trash.png') }}">
+                        </div>
+                    </td>
+                    <td>{{ job.company }}</td>
+                    <td>{{ job.location }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <script>
+        $(document).ready(function() {
+            var table = $('#TABLE').DataTable( {} );
+        } );
+    </script>
+{% endblock content %}
